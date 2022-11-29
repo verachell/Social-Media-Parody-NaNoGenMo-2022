@@ -1,0 +1,990 @@
+OUTPUT html
+FORMAT XA
+
+# define the beginning and end of the html file
+ASSIGNLIST starthtml = "<!DOCTYPE html><html><head><title>Parody</title><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="w3.css">"
+ASSIGNLIST customstyles = "<style>img{max-width:100%}body,h1,h2,h3,h4,h5,h6{font-family:"Arial",sans-serif}p{font-size:1.05em}body,html{height:100%}.postborder{border-top-style:solid;border-bottom-style:solid;border-left-style: hidden;border-right-style:hidden;border-color:none;border-width:5px;padding-left:10px;margin-bottom:5px}.special:hover,.special:focus{filter:drop-shadow(1px 2px darkgray)}.newsrotateright{-webkit-transform:rotate(4deg);-moz-transform:rotate(4deg);-o-transform:rotate(4deg);transform:rotate(4deg);}.newsrotateleft{-webkit-transform:rotate(-4deg);-moz-transform:rotate(-4deg);-o-transform:rotate(-4deg);transform:rotate(-4deg);}.postborder{border-top-style:solid;border-bottom-style:solid;border-left-style:hidden;border-right-style:hidden;border-color:none;border-width:5px;padding-left:10px; padding-right:10px;margin-bottom:5px}</style>"
+ASSIGNLIST endhtml = "</body></html>"
+
+# define beginning and end of newspaper styles
+ASSIGNLIST rotstyles = "newsrotateright" + "newsrotateleft"
+ASSIGNLIST paperstart = "<p></p><div class="_ROTSTYLES_" style="background-color:_NEWSCOLOR_;padding:10px;max-width:550px;margin:auto"><h2 style="text-align:center;font-family:serif">The _NEWSNAMES_ _NEWSNAMES_</h2><hr style="border-style:solid;border-color:darkgray;border-width:2px"><p style="font-family:monospace">"
+ASSIGNLIST paperend = "</p></div>&nbsp;"
+
+ASSIGNCATALOG allwords = wfolder + rotstyles
+
+# Define image locations
+ASSIGNLIST profilefolder = "PICS-profile/"
+ASSIGNLIST horizfolder = "PICS-horizontal/"
+ASSIGNCATALOG allwords = allwords + profilefolder + horizfolder
+
+# assign placeholders
+ASSIGNLIST temp = "temp"
+
+# assign male and female name lists
+REFGENDER male.names = malenames
+REFGENDER female.names = femalenames
+
+# assign other lists
+ASSIGNLIST openpara = "<p>"
+ASSIGNLIST openparacenter = "<p style="text-align:center">"
+ASSIGNLIST closepara = "</p>"
+ASSIGNLIST totdoptions =  aspiritem
+ASSIGNLIST totd = totdoptions 1
+ASSIGNLIST img4alt = "image" + "photo" + "picture"
+
+# assign wordjoins and case converters
+WORDJOIN facemoji = "&#" + faceemojicode + ";"
+WORDJOIN angrymoji = "&#" + angryemojicode + ";"
+ASSIGNLIST emoti = facemoji + emotions
+WORDJOIN imgpost = "_PREPIC_<img alt="_UNCLEAR_ _IMG4ALT_" src="_HORIZFOLDER_" + horizpicfile + "">"
+WORDJOIN jobsplural = jobs + "s"
+SLOWCASE anarchistphrases = anarchistphrases
+SLOWCASE latinphrases = latinphrases
+ASSIGNCATALOG allwords = allwords + facemoji + emoti + imgpost + totd + img4alt + anarchistphrases + latinphrases + jobsplural + angrymoji
+ASSIGNCATALOG irlstory = weather + mcstory + foreshadowing
+
+
+# assign catalogs
+ASSIGNCATALOG postinfo = postideas + anarchistphrases + imgpost + topicalposts
+ASSIGNCATALOG pass-commentinfo = facemoji + anarchistphrases + responses + interjections + postideas
+
+############################################
+### define the characters of the story   ###
+############################################
+
+GEN allusers 11 binary
+username 1 temp
+socialcolor 1 htmlcolor
+job 1 jobs
+profpic 1 profilepicfile
+postcontent 100 temp
+GENEND
+
+ASSIGNGEN main = allusers 1
+ASSIGNGEN otherusers = allusers - main
+
+# assign username to main character
+ASSIGNLIST auname = usernamepart 1
+SUPCASE mainsuffix = auname
+WORDJOIN mainusername = main.name + mainsuffix
+ASSIGNLIST main.username = mainusername
+
+# assign usernames to other characters
+LOOP 10
+ASSIGNLIST somesurnames = surnames 10
+ASSIGNLIST moreunames = usernamepart + somesurnames
+ASSIGNCATALOG allwords = allwords + moreunames
+ASSIGNLIST part1 = moreunames 1
+ASSIGNLIST part2 = moreunames 1
+SUPCASE upart1 = part1
+SUPCASE upart2 = part2
+WORDJOIN uname = upart1 + upart2
+ASSIGNLIST otherusers.username = uname
+SHIFT otherusers
+LOOPEND
+
+# generate adbrands too
+GEN adbrands 8
+username 1 temp
+socialcolor 1 htmlcolor
+profpic 1 profilepicfile
+postcontent 100 latinphrases
+GENEND
+
+# assign usernames to adbrands
+ASSIGNLIST adlistnames = latin + colors + treetypes
+SUPCASE upadlistnames = adlistnames
+LOOP 8
+ASSIGNLIST upart1 = upadlistnames 1
+ASSIGNLIST upart2 = upadlistnames 1
+WORDJOIN uname = upart1 + " " + upart2
+ASSIGNLIST adbrands.username = uname
+SHIFT adbrands
+LOOPEND
+
+GEN realfriends 3 binary
+# similar as for main character
+job 1 jobs
+# hobby or interests? 1--3?
+GENEND
+
+ASSIGNGEN curruser = otherusers
+ASSIGNGEN allfriends = main + realfriends
+
+RECITE remfriendlist = realfriends.name + all
+RECITE friendlist = allfriends.name + all
+
+ASSIGNCATALOG allwords = allwords + remfriendlist + friendlist
+
+#######################################
+### define descs to be called later ###
+#######################################
+
+# define carriage return to allow more readability of the resultant html code
+DESC cr
+OUTPUT md
+NEWLINE
+OUTPUT html
+DESCEND
+
+# add tooltips occasionally to elements user might wish to click on
+DESC inserttooltip
+LOOP 1
+ASSIGNLIST tooltip = " title="_TOOLTIP_""
+WRITE tooltip allwords
+LOOPEND
+DESCEND
+
+##################################################
+
+# define newspaper entries
+DESC newspaper
+WRITE paperstart allwords
+ASSIGNLIST h3open = "<h3 style="font-family:serif;text-align:center">"
+ASSIGNLIST h3close = "</h3>"
+WRITE h3open allwords
+FORMAT CA
+WRITE pass-headline allwords
+FORMAT XA
+WRITE h3close allwords
+LOOP 0--1
+ASSIGNLIST showpic = "<p style="text-align:center"><img alt="_UNCLEAR_ _IMG4ALT_" class="w3-grayscale-max" style="max-width:50%" src="_HORIZFOLDER__HORIZPICFILE_"></p>"
+WRITE showpic allwords
+LOOPEND
+ASSIGNLIST temp = "<p style="font-family:monospace">"
+WRITE temp allwords
+FORMAT CAP
+WRITE pass-news allwords
+FORMAT XA
+WRITE closepara allwords
+WRITE paperend allwords
+DESCEND
+
+############################################# 
+
+# define social media posts
+DESC startposticons
+CALL cr
+ASSIGNLIST styleposticons = "<p title="_TOOLTIP_" style="line-height:50%;text-align:center;letter-spacing:40px">"
+WRITE styleposticons allwords
+DESCEND
+
+DESC startcommenticons
+CALL cr
+ASSIGNLIST styleposticons = "<p title="_TOOLTIP_" style="line-height:50%;text-align:center;letter-spacing:25px">"
+WRITE styleposticons allwords
+DESCEND
+
+DESC writeicon
+ASSIGNLIST temp = "<span "
+WRITE temp allwords
+# CALL inserttooltip
+ASSIGNLIST temp = "class="special">&nbsp;_CURRICON_</span>"
+WRITE temp allwords
+DESCEND
+
+DESC middleposticons
+ASSIGNLIST curricon = "&#128172;"
+ASSIGNCATALOG allwords = allwords + curricon
+CALL writeicon
+ASSIGNLIST curricon = "&#9889;"
+ASSIGNCATALOG allwords = allwords + curricon
+CALL writeicon
+ASSIGNLIST curricon = "&#11088;"
+ASSIGNCATALOG allwords = allwords + curricon
+CALL writeicon
+DESCEND
+
+DESC endposticons
+ASSIGNLIST endposticons = "</p>"
+WRITE endposticons allwords
+DESCEND
+
+DESC posticons
+CALL startposticons
+CALL middleposticons
+CALL endposticons
+DESCEND
+
+DESC startanypost
+ASSIGNLIST posttop1 = "<div class="w3-card postborder" style="max-width:450px;margin:auto;border-color:_CURRUSER.SOCIALCOLOR_"><p"
+ASSIGNLIST posttop2 = "><img style="max-width:40px" src="_PROFILEFOLDER__CURRUSER.PROFPIC_" alt="_UNCLEAR_ profile image"><strong> _CURRUSER.USERNAME_</strong></p>"
+WRITE posttop1 allwords
+CALL inserttooltip
+WRITE posttop2 allwords
+WRITE openpara allwords
+DESCEND
+
+DESC startadpost 
+ASSIGNLIST posttop1 = "<div class="w3-card w3-dark-gray postborder" style="max-width:450px;margin:auto;border-color:_CURRUSER.SOCIALCOLOR_"><p style="text-align:center"><em>Advertisement</em><p"
+ASSIGNLIST posttop2 = "><img style="max-width:40px" src="_PROFILEFOLDER__CURRUSER.PROFPIC_" alt="_UNCLEAR_ profile image"><strong> _CURRUSER.USERNAME_</strong></p>"
+WRITE posttop1 allwords
+CALL inserttooltip
+WRITE posttop2 allwords
+WRITE openpara allwords
+DESCEND
+
+DESC middlepost
+FORMAT SA
+WRITE pass-postinfo allwords
+FORMAT XA
+WRITE closepara allwords
+CALL posticons
+DESCEND
+
+DESC middleadpost
+FORMAT SAC
+WRITE pass-postinfo allwords
+ASSIGNLIST url = "<span title="_TOOLTIP_" class="w3-hover-text-green" style="color:gold;text-decoration:underline">https://link.yw/b...</span>"
+WRITE url allwords
+FORMAT XA
+WRITE closepara allwords
+ASSIGNLIST temp = "<p><img title="_TOOLTIP_" class="w3-round-xlarge w3-hover-opacity" alt="_UNCLEAR_ _IMG4ALT_" src="_HORIZFOLDER__HORIZPICFILE_"></p>"
+WRITE temp allwords
+CALL posticons
+DESCEND
+
+DESC polmiddle
+FORMAT AMS
+WRITE pass-postinfo allwords 1--6
+FORMAT P
+WRITE pass-postinfo allwords
+FORMAT XA
+WRITE closepara allwords
+CALL posticons
+DESCEND
+
+DESC endpost
+ASSIGNLIST postbottom = "</div><br>"
+WRITE postbottom allwords
+DESCEND
+
+DESC postcomments
+ASSIGNLIST hline = "<hr style="border-width:1px;text-align:left;padding:0px;margin-left:none;border-style:dashed;border-color:_CURRUSER.SOCIALCOLOR_">"
+WRITE hline allwords
+LOOP 1--3
+SHIFT curruser
+ASSIGNLIST commenttop = "<div class="postborder" style="padding-top:5px;max-width:350px;margin-left:16px;margin-right:16px;border-color:_CURRUSER.SOCIALCOLOR_"><p"
+ASSIGNLIST commenttop2 = "><img style="max-width:30px" src="_PROFILEFOLDER__CURRUSER.PROFPIC_" alt="_UNCLEAR_ profile image"><strong> _CURRUSER.USERNAME_</strong></p>"
+ASSIGNLIST commentbottom = "</div>"
+WRITE commenttop allwords
+CALL inserttooltip
+WRITE commenttop2 allwords
+WRITE openpara allwords
+WRITE pass-commentinfo allwords
+## optionally have an emoji
+LOOP 0--1
+ASSIGNLIST temp = " _FACEMOJI_"
+WRITE temp allwords
+LOOPEND
+WRITE closepara allwords
+CALL startcommenticons
+CALL middleposticons
+CALL endposticons
+WRITE commentbottom allwords
+LOOPEND
+SHUFFLE curruser
+DESCEND
+
+DESC post
+SHUFFLE curruser
+SHIFT curruser
+CALL cr
+CALL startanypost
+CALL middlepost
+LOOP 0--1
+CALL postcomments
+LOOPEND
+CALL endpost
+DESCEND
+
+DESC sec2post
+SHUFFLE curruser
+SHIFT curruser
+CALL cr
+CALL startanypost
+ASSIGNCATALOG pass-postinfo = curruser.postcontent + postideas + imgpost
+CALL middlepost
+LOOP 0--1
+CALL sec2postcomments
+LOOPEND
+CALL endpost
+DESCEND
+
+DESC sec2topicalpost
+SHUFFLE curruser
+SHIFT curruser
+CALL cr
+CALL startanypost
+ASSIGNCATALOG pass-postinfo = curruser.postcontent + topicalposts
+CALL middlepost
+LOOP 0--1
+CALL sec2postcomments
+LOOPEND
+CALL endpost
+DESCEND
+
+DESC sec2Btopicalpost
+SHUFFLE curruser
+SHIFT curruser
+CALL cr
+CALL startanypost
+ASSIGNCATALOG pass-postinfo = curruser.postcontent
+CALL middlepost
+LOOP 0--1
+CALL sec2postcomments
+LOOPEND
+CALL endpost
+DESCEND
+
+DESC sec2postcomments
+ASSIGNLIST hline = "<hr style="border-width:1px;text-align:left;padding:0px;margin-left:none;border-style:dashed;border-color:_CURRUSER.SOCIALCOLOR_">"
+WRITE hline allwords
+LOOP 1--3
+SHIFT curruser
+ASSIGNLIST commenttop = "<div class="postborder" style="padding-top:5px;max-width:350px;margin-left:16px;margin-right:16px;border-color:_CURRUSER.SOCIALCOLOR_"><p"
+ASSIGNLIST commenttop2 = "><img style="max-width:30px" src="_PROFILEFOLDER__CURRUSER.PROFPIC_" alt="_UNCLEAR_ profile image"><strong> _CURRUSER.USERNAME_</strong></p>"
+ASSIGNLIST commentbottom = "</div>"
+WRITE commenttop allwords
+CALL inserttooltip
+WRITE commenttop2 allwords
+WRITE openpara allwords
+# ASSIGNCATALOG pass-totalcomments = pass-commentinfo + curruser.postcontent
+ASSIGNCATALOG pass-totalcomments = curruser.postcontent
+WRITE pass-totalcomments allwords
+## optionally have an emoji
+LOOP 0--1
+ASSIGNLIST temp = " _FACEMOJI_"
+WRITE temp allwords
+LOOPEND
+WRITE closepara allwords
+CALL startcommenticons
+CALL middleposticons
+CALL endposticons
+WRITE commentbottom allwords
+LOOPEND
+SHUFFLE curruser
+DESCEND
+
+DESC adpost
+CALL startadpost
+CALL middleadpost
+CALL endpost
+DESCEND
+
+DESC sec2adpost
+ASSIGNLIST pass-postinfo = curruser.postcontent
+CALL startadpost
+CALL middleadpost
+CALL endpost
+DESCEND
+
+DESC aspadpost
+ASSIGNLIST thead = pass-postinfo 1
+ASSIGNLIST topic = topicalads 1
+WORDJOIN choice1 = thead + " " + topic
+WORDJOIN choice2 = topic + ", " + thead
+ASSIGNLIST aspads = choice1 + choice2
+ASSIGNLIST pass-postinfo = aspads 1
+CALL adpost
+DESCEND
+
+DESC sec3algoadpost
+CALL adpost
+DESCEND
+
+DESC mcpost
+SHUFFLE curruser
+SHIFT curruser
+CALL cr
+CALL startanypost
+CALL middlepost
+CALL endpost
+DESCEND
+
+DESC polpost
+SHUFFLE curruser
+SHIFT curruser
+CALL cr
+CALL startanypost
+CALL polmiddle
+CALL postcomments
+CALL endpost
+DESCEND
+
+DESC algotopical
+ASSIGNLIST prepost = "<div style="max-width:450px;margin:auto;font-family:sans-serif">"
+ASSIGNLIST algoinfo = "<h4><em>Because of your interest in the _TOTD_, we think you'll enjoy these recent posts:</em></h4></div>"
+WRITE prepost allwords
+WRITE algoinfo allwords
+CALL cr
+ASSIGNLIST pass-postinfo = topicalposts
+SHUFFLE curruser
+LOOP 1--2
+CALL post
+SHIFT curruser
+LOOPEND
+ASSIGNGEN curruser = curradbrands
+SHUFFLE curruser
+SHIFT curruser
+ASSIGNCATALOG pass-postinfo = curruser.postcontent
+LOOP 1
+CALL aspadpost
+LOOPEND
+DESCEND
+
+DESC sec2algotopical
+ASSIGNLIST prepost = "<div style="max-width:450px;margin:auto;font-family:sans-serif">"
+ASSIGNLIST algoinfo = "<h4><em>Because of your interest in the _TOTD_, we think you'll enjoy these recent posts:</em></h4></div>"
+WRITE prepost allwords
+WRITE algoinfo allwords
+CALL cr
+SHUFFLE curruser
+LOOP 1--2
+ASSIGNCATALOG pass-postinfo = algopostinfo
+CALL post
+SHIFT curruser
+LOOPEND
+ASSIGNGEN curruser = curradbrands
+SHUFFLE curruser
+SHIFT curruser
+ASSIGNCATALOG pass-postinfo = curruser.postcontent
+LOOP 1
+CALL aspadpost
+LOOPEND
+DESCEND
+
+DESC sec3algotopical
+ASSIGNLIST prepost = "<div style="max-width:450px;margin:auto;font-family:sans-serif">"
+ASSIGNLIST algoinfo = "<h4><em>Because of your interest in the _TOTD_, we think you'll enjoy these recent posts:</em></h4></div>"
+WRITE prepost allwords
+WRITE algoinfo allwords
+CALL cr
+SHUFFLE curruser
+LOOP 1--2
+ASSIGNCATALOG pass-postinfo = algopostinfo
+CALL post
+SHIFT curruser
+LOOPEND
+ASSIGNGEN curruser = curradbrands
+SHUFFLE curruser
+SHIFT curruser
+ASSIGNCATALOG pass-postinfo = curruser.postcontent
+LOOP 1
+CALL sec3algoadpost
+LOOPEND
+DESCEND
+
+DESC maincharpost
+ASSIGNLIST pass-maincontent = "_LATER_ _MAIN.NAME_ made a quick social media update"
+CALL writemain
+FORMAT XA
+ASSIGNLIST pass-postinfo = mcpostcontent
+ASSIGNGEN curruser = main
+call mcpost
+DESCEND
+
+########################################################
+# define main content
+DESC mainstart
+ASSIGNLIST openmain = "<div class="w3-white" style="max-width:600px;margin:auto;padding-left:10px;padding-right:5px;font-family:Garamond,serif">"
+WRITE openmain allwords
+DESCEND
+
+DESC mainend
+ASSIGNLIST closemain = "</div>"
+WRITE closemain allwords
+DESCEND
+
+DESC writemain
+CALL mainstart
+WRITE openpara allwords
+FORMAT ACPS
+WRITE pass-maincontent allwords
+FORMAT XA
+WRITE closepara allwords
+CALL mainend
+DESCEND
+
+DESC writemainmulti
+SHUFFLE allfriends
+SHIFT allfriends
+CALL mainstart
+WRITE openpara allwords
+FORMAT ACPS
+WRITE pass-maincontent allwords 0--2
+SHIFT allfriends
+WRITE pass-maincontent allwords 0--2
+FORMAT XA
+WRITE closepara allwords
+CALL mainend
+DESCEND
+
+DESC irlstorywrite
+ASSIGNCATALOG pass-maincontent = irlstory
+CALL writemainmulti
+SHIFT allfriends
+CALL writemainmulti
+DESCEND
+
+
+### end of desc definitions ###
+
+
+##########################
+### Generate the story ###
+##########################
+
+
+##### Set up the start #####
+ASSIGNLIST storytitle = "<h1 class="w3-xxxlarge" style="text-align:center">The _MAIN.JOB_</h1>"
+ASSIGNLIST pass-maincontent = "<p style="text-align:center;font-family:Garamond;serif"><em>An algorithmically generated work of fiction</em></p>"
+FORMAT XA
+WRITE starthtml allwords
+CALL cr
+WRITE customstyles allwords
+CALL cr
+WRITE storytitle allwords
+CALL cr
+WRITE pass-maincontent allwords
+#CALL writemain
+#CALL cr
+ASSIGNLIST pass-maincontent = "There was a lot in the news about the _TOTD_ but _MAIN.NAME_ didn't get too concerned about that"
+CALL writemain
+ASSIGNLIST pass-maincontent =  "_MAIN.HESHE_ went to _MAIN.HISHER_ job as a _MAIN.JOB_ and hung out with _MAIN.HISHER_ friends _REMFRIENDLIST_ after work"
+CALL writemain
+ASSIGNLIST pass-maincontent = "_LATER_ _MAIN.NAME_ made a quick social media update"
+CALL writemain
+FORMAT XA
+ASSIGNLIST pass-postinfo = "ask me _LITTLEKNOWNFACTS_ about my work as a _CURRUSER.JOB_" + "it was a busy day as a _CURRUSER.JOB_" + "I work as a _CURRUSER.JOB_ and I like it. Do you like your job?"
+ASSIGNGEN curruser = main
+CALL mcpost
+ASSIGNGEN curradbrands = adbrands
+##############################
+
+########## First third of story ##############
+
+DESC first3rd
+LOOP 25
+#### irl story ###
+CALL irlstorywrite
+
+###### topical post ####
+ASSIGNGEN curruser = otherusers
+SHUFFLE curruser
+SHIFT curruser
+ASSIGNLIST pass-postinfo = topicalposts
+CALL post
+
+#### political post ######
+ASSIGNGEN curruser = otherusers
+SHUFFLE curruser
+SHIFT curruser
+ASSIGNLIST pass-postinfo = anarchistphrases
+CALL polpost
+
+#### ad post #######
+ASSIGNGEN curruser = adbrands
+SHUFFLE curruser
+SHIFT curruser
+ASSIGNCATALOG pass-postinfo = latinphrases
+CALL adpost
+
+#### newspaper ####
+ASSIGNLIST pass-headline = "_TOTD_ deemed _POSADJ_" + "_TOTD_ news" + "_TOTD_ updates" + "_TOTD_ said to be _POSADJ_"
+ASSIGNLIST pass-news = newsreports
+CALL newspaper
+
+###### topical post ####
+ASSIGNGEN curruser = otherusers
+SHUFFLE curruser
+SHIFT curruser
+ASSIGNLIST pass-postinfo = topicalposts
+CALL post
+
+##### topical algorithm post #####
+ASSIGNGEN curruser = otherusers
+CALL algotopical
+
+#### irl story ###
+CALL irlstorywrite
+
+###### regular post ######
+ASSIGNGEN curruser = otherusers
+SHUFFLE curruser
+SHIFT curruser
+ASSIGNCATALOG pass-postinfo = postinfo
+CALL post
+
+###### main character post #########
+CALL maincharpost
+
+LOOPEND
+DESCEND
+
+CALL first3rd
+
+# change TOTD, making sure that it can't pick the current one again
+ASSIGNCATALOG allwords = allwords - totd
+ASSIGNLIST totdoptions = aspiritem - totd
+ASSIGNLIST totd = totdoptions 1
+ASSIGNCATALOG allwords = allwords + totd
+
+CALL first3rd
+
+###### end first third of the story ###############
+
+###### second third of the story #############
+# set up conspiracy variables
+ASSIGNLIST specjobs = main.job
+WORDJOIN specjobsplural = specjobs + "s"
+ASSIGNLIST specevilgoal = evilgoal 1
+ASSIGNCATALOG allwords = allwords + specjobs + specjobsplural + specevilgoal
+
+# divide up social media users into those who support a conspiracy and those who don't
+ASSIGNGEN conspusers = otherusers 6
+ASSIGNGEN noconspusers = otherusers - conspusers
+
+LOOP 6
+ASSIGNLIST conspusers.postcontent = conspagree
+SHIFT conspusers
+LOOPEND
+
+LOOP 4
+ASSIGNLIST noconspusers.postcontent = conspdisagree
+SHIFT noconspusers
+LOOPEND
+
+ASSIGNGEN sec2users = conspusers + noconspusers
+
+# assign newspaper content and headlines
+ASSIGNLIST pass-headline = conspheadlines
+ASSIGNLIST pass-news = conspnews
+
+# assign snit brands
+GEN lowadbrands 8
+username 1 temp
+socialcolor 1 htmlcolor
+profpic 1 profilepicfile
+postcontent 20 snitcontent
+GENEND
+
+LOOP 8
+ASSIGNLIST snit1 = snitbrand1 1
+ASSIGNLIST snit2 = snitbrand2 1
+WORDJOIN tempname = snit1 + " " + snit2
+ASSIGNLIST lowadbrands.username = tempname
+SHIFT lowadbrands
+LOOPEND
+
+ASSIGNGEN admix1 = adbrands 4
+ASSIGNGEN admix2 = lowadbrands 4
+ASSIGNGEN curradbrands = admix1 + admix2
+
+LOOP 25
+
+#### irl story ###
+CALL irlstorywrite
+
+### topical post ###
+ASSIGNGEN curruser = sec2users
+SHUFFLE curruser
+SHIFT curruser
+CALL sec2topicalpost
+
+### political post ###
+ASSIGNGEN curruser = sec2users
+SHUFFLE curruser
+SHIFT curruser
+ASSIGNLIST pass-postinfo = anarchistphrases
+CALL polpost
+
+### ad post ###
+ASSIGNGEN curruser = curradbrands
+SHUFFLE curruser
+SHIFT curruser
+CALL sec2adpost
+
+#### newspaper ####
+CALL newspaper
+
+### topical post ###
+ASSIGNGEN curruser = sec2users
+SHUFFLE curruser
+SHIFT curruser
+CALL sec2topicalpost
+
+##### topical algorithm post #####
+ASSIGNGEN curruser = sec2users
+ASSIGNCATALOG algopostinfo = topicalposts + topicalnegative
+CALL sec2algotopical
+
+#### irl story ###
+CALL irlstorywrite
+
+### regular post ###
+ASSIGNGEN curruser = sec2users
+CALL sec2post
+
+###### main character post #########
+CALL maincharpost
+
+LOOPEND
+
+########### second part of middle ############
+ASSIGNGEN curradbrands = lowadbrands
+
+
+LOOP 25
+#### irl story ###
+CALL irlstorywrite
+
+### topical post ###
+ASSIGNGEN curruser = sec2users
+SHUFFLE curruser
+SHIFT curruser
+CALL sec2topicalpost
+
+### political post ###
+ASSIGNGEN curruser = sec2users
+SHUFFLE curruser
+SHIFT curruser
+ASSIGNLIST pass-postinfo = anarchistphrases
+CALL polpost
+
+### ad post ###
+ASSIGNGEN curruser = curradbrands
+SHUFFLE curruser
+SHIFT curruser
+CALL sec2adpost
+
+#### newspaper ####
+CALL newspaper
+
+### topical post ###
+ASSIGNGEN curruser = sec2users
+SHUFFLE curruser
+SHIFT curruser
+CALL sec2Btopicalpost
+
+##### topical algorithm post #####
+ASSIGNGEN curruser = sec2users
+ASSIGNCATALOG algopostinfo = topicalnegative
+CALL sec2algotopical
+
+#### irl story ###
+CALL irlstorywrite
+
+### regular post ###
+ASSIGNGEN curruser = sec2users
+CALL sec2post
+
+###### main character post #########
+CALL maincharpost
+
+LOOPEND
+
+################ end middle part of story ###############
+
+############# start last part of story ######################
+
+ASSIGNLIST negtotd = "Say no to the _TOTD_!" + "Down with the _TOTD_!" + "Unite with us against the _TOTD_!" + "We hate the _TOTD_!"
+WORDJOIN negadcontent = snitcontent + ". " + negtotd
+
+ASSIGNCATALOG algopostinfo = topicalnegative + topicalharm
+
+LOOP 8
+ASSIGNLIST lowadbrands.postcontent = negadcontent
+SHIFT lowadbrands
+LOOPEND
+
+# set up misinformation accounts
+GEN misinfoads 8
+username 1 temp
+socialcolor 1 htmlcolor
+profpic 1 profilepicfile
+postcontent 20 misinfobrands
+GENEND
+
+LOOP 8
+ASSIGNLIST uname1 = misinf1 1
+ASSIGNLIST uname2 = misinf2 1
+ASSIGNLIST middleword = specjobsplural + totd + "wickedness" + "naysayers" + "foulness"
+ASSIGNLIST middleselect = middleword 1
+SUPCASE middleup = middleselect
+WORDJOIN uname = uname1 + " " + middleup + " " + uname2
+ASSIGNLIST misinfoads.username = uname
+SHIFT misinfoads
+LOOPEND
+
+ASSIGNGEN admix1 = lowadbrands 4
+ASSIGNGEN admix2 = misinfoads 4
+ASSIGNGEN curradbrands = admix1 + admix2
+
+# set up newspapers
+ASSIGNLIST pass-headline = harmheadlines
+ASSIGNLIST pass-news = harmnews
+
+# set up user post content of increased harm
+LOOP 6
+ASSIGNLIST conspusers.postcontent = intentharm
+SHIFT conspusers
+LOOPEND
+
+ASSIGNGEN sec3users = conspusers + noconspusers
+
+LOOP 25
+
+#### irl story ###
+CALL irlstorywrite
+
+### topical post ###
+ASSIGNGEN curruser = sec3users
+SHUFFLE curruser
+SHIFT curruser
+CALL sec2topicalpost
+
+### political post ###
+ASSIGNGEN curruser = sec3users
+SHUFFLE curruser
+SHIFT curruser
+ASSIGNLIST pass-postinfo = anarchistphrases
+CALL polpost
+
+### ad post ###
+ASSIGNGEN curruser = curradbrands
+SHUFFLE curruser
+SHIFT curruser
+CALL sec2adpost
+
+#### newspaper ####
+CALL newspaper
+
+### topical post ###
+ASSIGNGEN curruser = sec3users
+SHUFFLE curruser
+SHIFT curruser
+CALL sec2topicalpost
+
+##### topical algorithm post #####
+ASSIGNGEN curruser = sec3users
+ASSIGNCATALOG algopostinfo = topicalposts + topicalnegative + topicalharm
+CALL sec3algotopical
+
+#### irl story ###
+CALL irlstorywrite
+
+### regular post ###
+ASSIGNGEN curruser = sec3users
+CALL sec2post
+
+###### main character post #########
+CALL maincharpost
+
+LOOPEND
+
+########### second part of final ############
+ASSIGNGEN curradbrands = misinfoads
+ASSIGNCATALOG algopostinfo = topicalharm
+
+LOOP 25
+#### irl story ###
+CALL irlstorywrite
+
+### topical post ###
+ASSIGNGEN curruser = sec3users
+SHUFFLE curruser
+SHIFT curruser
+CALL sec2topicalpost
+
+### political post ###
+ASSIGNGEN curruser = sec3users
+SHUFFLE curruser
+SHIFT curruser
+ASSIGNLIST pass-postinfo = anarchistphrases
+CALL polpost
+
+### ad post ###
+ASSIGNGEN curruser = curradbrands
+SHUFFLE curruser
+SHIFT curruser
+CALL sec2adpost
+
+#### newspaper ####
+CALL newspaper
+
+### topical post ###
+ASSIGNGEN curruser = sec3users
+SHUFFLE curruser
+SHIFT curruser
+CALL sec2topicalpost
+
+##### topical algorithm post #####
+ASSIGNGEN curruser = sec3users
+ASSIGNCATALOG algopostinfo = topicalnegative + topicalharm
+CALL sec3algotopical
+
+#### irl story ###
+CALL irlstorywrite
+
+### regular post ###
+ASSIGNGEN curruser = sec3users
+CALL sec2post
+
+###### main character post #########
+CALL maincharpost
+
+LOOPEND
+
+########## final ending of story #########
+# adpost
+ASSIGNGEN curruser = curradbrands
+SHUFFLE curruser
+SHIFT curruser
+CALL sec2adpost
+
+CALL mainstart
+WRITE openpara allwords
+FORMAT ACS
+ASSIGNLIST pass-maincontent = "_MAIN.NAME_ was scared. Would _MAIN.HESHE_ stay safe in _MAIN.HISHER_ job as a _MAIN.JOB_?"
+WRITE pass-maincontent allwords
+FORMAT XA
+WRITE closepara allwords
+CALL mainend
+
+CALL mainstart
+WRITE openpara allwords
+FORMAT ACS
+ASSIGNLIST pass-maincontent = "_MAIN.NAME_ heard a noise outside _MAIN.HISHER_ window."
+WRITE pass-maincontent allwords
+ASSIGNLIST pass-maincontent = "_MAIN.HESHE_ looked outside. A mob had converged."
+WRITE pass-maincontent allwords
+FORMAT XA
+WRITE closepara allwords
+CALL mainend
+
+# set up final newspaper article
+ASSIGNLIST specsurname = surnames 1
+ASSIGNCATALOG allwords = allwords + specsurname
+ASSIGNLIST pass-headline = "_MAIN.JOB_ killed by angry mob"
+ASSIGNLIST pass-news = "_MAIN.NAME_ _SPECSURNAME_, a _MAIN.JOB_, was killed yesterday by a neighborhood mob. Police say that _MAIN.HESHE_ was literally torn apart by the mob, leaving behind a grisly scene of blood and body parts. The motive was related to a conspiracy theory which states that _SPECJOBSPLURAL_ will use a _TOTD_ to _SPECEVILGOAL_. This conspiracy theory, which is prevalent on social media, is _BASELESS_"
+CALL newspaper
+
+ASSIGNGEN curruser = conspusers
+ASSIGNLIST pass-postinfo = "I don't think that _MAIN.NAME_ _SPECSURNAME_ was really killed by a mob. It's all a conspiracy designed to stop people believing the truth. In reality, _MAIN.HESHE_'s still alive."
+CALL mcpost
+
+CALL mainstart
+WRITE openparacenter allwords
+FORMAT ACS
+ASSIGNLIST pass-maincontent = "THE BEGINNING"
+WRITE pass-maincontent allwords
+FORMAT XA
+WRITE closepara allwords
+CALL mainend
+
+
+
+CALL cr
+WRITE endhtml allwords
