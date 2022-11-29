@@ -1,5 +1,5 @@
 # Social-Media-Parody-NaNoGenMo-2022
-Generates >50000 words of parody of social media
+Generates >50000 words of parody of social media. Output is an html page.
 
 ## Social Media Parody
 ### Usage - how to run this program
