@@ -1,0 +1,17 @@
+AntiqueWhite
+Beige
+BlanchedAlmond
+Cornsilk
+FloralWhite
+GhostWhite
+Gainsboro
+Ivory
+LightGrey
+LightYellow
+Linen
+OldLace
+PapayaWhip
+PeachPuff
+SeaShell
+Snow
+WhiteSmoke

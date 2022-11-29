@@ -1,0 +1,10 @@
+explainer
+guide
+summary
+primer
+pointer
+synopsis
+summing-up
+compendium
+digest
+
