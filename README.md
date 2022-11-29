@@ -2,6 +2,10 @@
 Generates >50000 words of parody of social media. Output is an html page.
 
 ## Social Media Parody
+You can view an example of the generated output as a web page at https://verachell.github.io/Social-Media-Parody-NaNoGenMo-2022/  
+
+This output is called ```index.html``` in the repository; the reason for the name is to enable GitHub to display it, it needs to be called index.html (as opposed to ExampleOutput.html or something more meaningful). 
+
 ### Usage - how to run this program
 
 Please note: This code requires that:   
@@ -25,6 +29,8 @@ This is not a case where the story's very plot comes seemingly out of nowhere, b
 
 #### Things that change with each run of the program
 Each time this Social Media Parody algorithm is run, the main character's names and the other usernames are randomized. The main character's occupation is also randomized, as are the popular items (one of which becomes part of the conspiracy). The supposed goal of the conspiracists is also randomized. Advertiser brand names are also randomized. Therefore a somewhat different story will be generated each time, but illustrating the same points.
+
+In addition to the main example output in the link given above, a second example output file is included in the repository ```AnotherExampleOutput.html``` to help illustrate how subsequent runs differ. To view it, you would need to download both [AnotherExampleOutput.html](https://github.com/verachell/Social-Media-Parody-NaNoGenMo-2022/blob/main/AnotherExampleOutput.html) and [w3.css](https://github.com/verachell/Social-Media-Parody-NaNoGenMo-2022/blob/main/AnotherExampleOutput.html) and open the html file in your browser. (GitHub Pages only allows viewing of 1 html file per repository, as far as I know, so the first output file is viewable from within GitHub but not ```AnotherExampleOutput.html```.
 
 #### Story template outline
 ![diagram of story template](https://github.com/verachell/Documentation-Images/blob/26372a7f91ccc035b7aedc6a6806194afa956a58/social-media-parody-documentation-images/StoryTemplateOutline.png)
