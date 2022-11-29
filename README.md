@@ -26,6 +26,9 @@ This is not a case where the story's very plot comes seemingly out of nowhere, b
 #### Things that change with each run of the program
 Each time this Social Media Parody algorithm is run, the main character's names and the other usernames are randomized. The main character's occupation is also randomized, as are the popular items (one of which becomes part of the conspiracy). The supposed goal of the conspiracists is also randomized. Advertiser brand names are also randomized. Therefore a somewhat different story will be generated each time, but illustrating the same points.
 
+#### Story template outline
+![diagram of story template](https://github.com/verachell/Documentation-Images/blob/26372a7f91ccc035b7aedc6a6806194afa956a58/social-media-parody-documentation-images/StoryTemplateOutline.png)
+
 ### Credits
 
 #### CSS
