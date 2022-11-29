@@ -18,7 +18,7 @@ Then in your command line, type  ```ruby yeetwords.rb parody.txt```
 
 A file containing the >50000 words parody will be generated in html format. The html includes ficticious social media posts, newspaper entries, and more. 
 
-The html will display correctly so long as you have it in the same directory as the css file provided in the repository (```w3.css```) - this is the case by default, but if you move the html file you will also need to move the css file.
+The html will display correctly so long as you have it in the same directory as the css file provided in the repository (```w3.css```) and that you have the image folders there also - this is the case by default, but if you move the html file, you will also need to move the css file and image folders.
 
 ### Overview
 This parody consists of social media posts, real life activities, and newspaper reports (all ficticious).
