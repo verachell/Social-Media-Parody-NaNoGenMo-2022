@@ -8,7 +8,7 @@ This example output is called ```index.html``` in the repository; the reason for
 
 ### Usage - how to run this program
 
-Please note: This code requires that:   
+Please note: As a prerequisite, this code requires that:   
 - ```ruby``` is installed on your machine and  
 - you have the ```yeetwords.rb``` file from the YeetWords repository (see below for where to get it and place it).  
 
