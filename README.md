@@ -48,7 +48,7 @@ Latin phrases translated into English came from https://parade.com/1247077/maryn
 
 Latin words came from https://reference.yourdictionary.com/other-languages/latin-vocabulary.html and were used (in conjunction with colors and tree types) as a source of potential names for aspirational ad brands
 
-Trending items were crowdsourced from family, aiming for unusual and/or aspirational items, a physical item/object, large in size, and not a living thing 
+The list of trending items was crowdsourced from family, aiming for unusual and/or aspirational items, a physical item/object, large in size, and not a living thing 
 
 Anarchist phrases came from the Project Gutenberg book [The Right To Ignore The State by Herbert Spencer](https://www.gutenberg.org/ebooks/34649). The content of the book was processed as follows for use in this social media parody: individual phrases were isolated (phrases defined as anything between commas and between certain other punctuation, with the punctuation removed in the process). This isolation was done using [this gist](https://gist.github.com/verachell/44047995f244fcea726613ceb99531c5), resulting in a list of unpunctuated phrases. Phrases from this list were used together (in random order) to produce political rhetoric. The original book is included in this repository for completeness.
 
