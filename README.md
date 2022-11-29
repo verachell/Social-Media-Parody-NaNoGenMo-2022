@@ -4,7 +4,7 @@ Generates >50000 words of parody of social media. Output is an html page.
 ## Social Media Parody
 You can view an example of the generated output as a web page at https://verachell.github.io/Social-Media-Parody-NaNoGenMo-2022/  
 
-This output is called ```index.html``` in the repository; the reason for the name is because to enable GitHub to display it, it needs to be called index.html (as opposed to something meaningful such as ExampleOutput.html). 
+This output is called ```index.html``` in the repository; the reason for the name is because to enable GitHub to display it as a web page in the link above, it needs to be called index.html (as opposed to something meaningful such as ExampleOutput.html). 
 
 ### Usage - how to run this program
 
