@@ -96,7 +96,7 @@ In the above situation, the one = sign actually is associated with 2 back-end wo
 
 Another cause of undercount with the = sign is multiple words within the tag. As an example, image alts:
 ```<img alt="indistinct profile picture"...```
-The above has 1 = sign associated with 3 back-end words that we want to remove from the word count, not just 1. (A possible solution is not to have image alts, but I could bring myself to write html without image alts.) The tooltips are another example of one = sign being associated with more than 1 back-end word that needs subtracting, since all tooltips have multiple words.
+The above has 1 = sign associated with 3 back-end words that we want to remove from the word count, not just 1. (A possible solution is not to have image alts, but I could not bring myself to write html without image alts.) The tooltips are another example of one = sign being associated with more than 1 back-end word that needs subtracting, since all tooltips have multiple words.
 
 Bearing in mind that one = sign can be associated with 1, 2, 3 or possibly even 4 or more(?) words, I decided another approach would be necessary. 
 
