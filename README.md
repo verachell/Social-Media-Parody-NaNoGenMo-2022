@@ -29,16 +29,24 @@ Each time this Social Media Parody algorithm is run, the main character's names 
 ### Credits
 
 #### CSS
-The [w3css stylesheet](https://www.w3schools.com/w3css/) is used for styling the HTML. 
+The [w3css stylesheet](https://www.w3schools.com/w3css/) is used for styling the resultant HTML. 
 
 #### Sources of words and phrases
 Latin phrases translated into English came from https://parade.com/1247077/marynliles/latin-phrases/ and these were used as a source of content for aspirational ad brands in this story
 
-Latin words came from https://reference.yourdictionary.com/other-languages/latin-vocabulary.html and were used as a source of potential names for aspirational ad brands
+Latin words came from https://reference.yourdictionary.com/other-languages/latin-vocabulary.html and were used (in conjunction with colors and tree types) as a source of potential names for aspirational ad brands
 
-The list of things for trending items were crowdsourced from family, aiming for unusual and/or aspirational items, a physical item/object, large in size, and not a living thing 
+Trending items were crowdsourced from family, aiming for unusual and/or aspirational items, a physical item/object, large in size, and not a living thing 
 
 Anarchist phrases came from the Project Gutenberg book [The Right To Ignore The State by Herbert Spencer](https://www.gutenberg.org/ebooks/34649). The content of the book was processed as follows for use in this social media parody: individual phrases were isolated (phrases defined as anything between commas and between certain other punctuation, with the punctuation removed in the process). This isolation was done using [this gist](https://gist.github.com/verachell/44047995f244fcea726613ceb99531c5), resulting in a series of unpunctuated phrases. Phrases from this list were used together (in random order) to produce political rhetoric.
+
+Html color names (e.g. red, goldenrod, aliceblue) came from https://htmlcolorcodes.com/color-names/ - names were pasted into a spreadsheet and extracted the column of interest with just the names in it.
+
+Newspaper colors were hand-selected from the full list of html color names to allow light beige or gray backgrounds.
+
+Face emoji codes came from https://www.w3schools.com/charsets/ref_emoji_smileys.asp (pasted into spreadsheet and isolated the column of interest - in this case the decimal html code)
+
+Angry emoji codes were hand-selected from the full list of face emoji codes
 
 Sentences about the weather came from https://github.com/verachell/Horror-Story-with-Monster-NaNoGenMo-2020 - the positive, neutral and negative weather sentences were combined into 1 set of weather sentences.
 
@@ -50,17 +58,11 @@ Animals, emotions, large nouns, clothes bottoms, portable nouns, positive adject
 
 Past tense verbs (verbed) present tense verbs (verbing) and interjections, adverbs and conjunctions are from https://github.com/verachell/English-word-lists-parts-of-speech-approximate
 
-Html color names (e.g. red, goldenrod, aliceblue) came from https://htmlcolorcodes.com/color-names/ - names were pasted into a spreadsheet and extracted the column of interest with just the names in it.
-
-Newspaper colors were hand-selected from the full list of html color names to allow light beige or gray backgrounds.
-
-Face emoji codes came from https://www.w3schools.com/charsets/ref_emoji_smileys.asp (pasted into spreadsheet and isolated the column of interest - in this case the decimal html code)
-
-Angly emoji codes were hand-selected from the full list of face emoji codes
-
 Male and female first names were obtained from the Top Names Over the Last 100 Years from the Social Security Administration of the USA, https://www.ssa.gov/OACT/babynames/decades/century.html which at the time of downloading were from the years 1921-2020, and comprised the top overall 100 most popular names for each gender.
 
 Surnames came from: Powell, Kimberly. "Top 100 Most Common Last Names in the United States." ThoughtCo, Feb. 16, 2021, thoughtco.com/most-common-us-surnames-1422656.
+
+The other words and sentence lists were created manually.
 
 ### Word count and how it was calculated
 
