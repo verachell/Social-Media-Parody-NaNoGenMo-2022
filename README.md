@@ -18,7 +18,7 @@ Then in your command line, type  ```ruby yeetwords.rb parody.txt```
 
 A file containing the >50000 words parody will be generated in html format. The html includes ficticious social media posts, newspaper entries, and more. 
 
-The html output will display correctly in your local browser so long as you have the html output file in the same directory as the css file provided in the repository ```w3.css``` and that you have the image folders there also ```PICS-horizontal``` and ```PICS-profile```. This is the case by default, but if you move the html file, you will also need to move the css file and image folders.
+The html output will display correctly in your local browser so long as you have the html output file in the same directory as the css file provided in the repository ```w3.css``` and that you have the image folders there also ```PICS-horizontal``` and ```PICS-profile```. This is the case by default, but if you move the html output file, you will also need to move the css file and image folders.
 
 ### Overview
 This parody consists of social media posts, real life activities, and newspaper reports (all ficticious).
@@ -32,7 +32,7 @@ Each time this Social Media Parody algorithm is run, the main character's names 
 
 In addition to the main example output in the link given above, a second example output file is included in the repository ```AnotherExampleOutput.html``` to help illustrate how subsequent runs differ. The easiest way to view it is to download the entire contents of this repository and open ```AnotherExampleOutput.html``` with your browser. 
 
-#### Story template outline
+#### Diagram of story template outline
 ![diagram of story template](https://github.com/verachell/Documentation-Images/blob/26372a7f91ccc035b7aedc6a6806194afa956a58/social-media-parody-documentation-images/StoryTemplateOutline.png)
 
 ### Credits
