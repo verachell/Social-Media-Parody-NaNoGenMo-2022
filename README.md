@@ -19,7 +19,7 @@ The html will display correctly so long as you have it in the same directory as 
 ### Overview
 This parody consists of social media posts, real life activities, and newspaper reports (all ficticious).
 
-This parody has a defined beginning, middle and end. A fair amount of templating was necessary to achieve this. 
+This parody has a defined beginning, middle and end. 
 
 This is not a case where the story's very plot comes seemingly out of nowhere, but rather where the rhetoric and repetition necessary for the parody is filled in by the algorithm according to the "bones" of the template. This template is written in YeetWords.
 
